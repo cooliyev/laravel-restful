@@ -16,6 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $last_name
  * @property string $email
  * @property string $password
+ * @property string $role_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -34,19 +35,27 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Role $role
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+	use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-    ];
+	protected $fillable = [
+		'first_name',
+		'last_name',
+		'email',
+		'password',
+		'role_id',
+	];
 
-    protected $hidden = [
-        'password',
-    ];
+	protected $hidden = [
+		'password',
+	];
+
+	public function role()
+	{
+		return $this->belongsTo(Role::class);
+	}
 }
